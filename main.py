@@ -33,6 +33,9 @@ def main():
   # Finds piece by author
   dfAuthors = findAuthors(df)
   
+  # Creates graphics folder if one does not already exist
+  os.makedirs('graphics', exist_ok=True)
+
   # Analyze each author's performance
   analyze(dfAuthors)
   
