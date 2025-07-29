@@ -6,28 +6,22 @@ from bs4 import BeautifulSoup
 notNames = ['Life & Arts', 'Comics & Activities', 'History', 'Wild Art', 'News', 'Breaking News', 'News Brief', 'Student Government', 'Newspaper', 'Opinion', 'Editor’s Desk', 'Editorial', 'Letter to the Editor', 'Op-Ed', 'Sports', 'Basketball', 'Chess', 'Esports', 'Uncategorized', 
            'Featured', 'Breaking News', 'Construction', 'Highlight', 'Immigration', 'In Case You Missed It', 'UTD Esports']
 
-def scraper(path):
-    df = pd.read_csv(path, names=["title", "views", "url"])
+# Takes URL as input and returns time piece was published and piece's tags
+def scrapeTags(url):
+    print(url)
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, 'html.parser')
     
     tags = []
-    times = []
+    times = None
 
-    for url in df["url"]:
-        print(url)
-        response = requests.get(url)
-        soup = BeautifulSoup(response.text, 'html.parser')
-        
-        tags.append([])
-        time = soup.find('time')
-        if time == None:
-            times.append(None)
-            continue
-        times.append(pd.to_datetime(time.text))
+    # Scrapes time from URL
+    time = soup.find('time')
+    if time != None:
+        times = pd.to_datetime(time.text)
 
-        for elem in soup.find_all('a', class_ = 'elementor-post-info__terms-list-item'):
-            tags[-1].append(elem.text.strip())
-
-    df['times'] = times
-    df["tags"] = tags
-
-    df.to_csv("data\\data.csv", index=False)
+    # Scrapes tags from URL
+    for elem in soup.find_all('a', class_ = 'elementor-post-info__terms-list-item'):
+        tags.append(elem.text.strip())
+    
+    return (times, tags)
