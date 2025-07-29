@@ -6,7 +6,7 @@
 
 A pipeline that expands statistics obtained from Jetpack for <i>The Retrograde</i> into comprehensive insights and visualizations. The pipeline has two functionalities:
 1. Create fun little reports detailing stats for <i>The Retrograde</i> staff
-2. Illustrate trends over time for the entire orgnization
+2. Illustrate trends over time for the entire organization
 
 ## How to run
 1. Clone the repo

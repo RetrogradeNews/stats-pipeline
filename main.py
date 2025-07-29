@@ -3,7 +3,8 @@ import ast
 import pandas as pd
 
 from scraping import scrapeTags
-from processing import findAuthors
+from processing import clean, findAuthors
+from analysis import analyze
 
 def main():
   csvLocation = 'data\\rg.csv'
@@ -24,13 +25,16 @@ def main():
   else:
     df = pd.read_csv(dataLocation)
     df['tags'] = df['tags'].apply(ast.literal_eval)
+    df['times'] = pd.to_datetime(df['times'])
 
-  # Removes all non-piece pages
-  df = df.dropna()
+  # Cleans and returns relevant data
+  df = clean(df)
 
   # Finds piece by author
   dfAuthors = findAuthors(df)
-  print(dfAuthors)
+  
+  # Analyze each author's performance
+  analyze(dfAuthors)
   
   print("Done!")
         
