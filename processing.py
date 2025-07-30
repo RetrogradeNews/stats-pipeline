@@ -24,7 +24,7 @@ def simplifyCategories(df):
     newdf = df
     newdf["category"] = newdf["category"].replace(['Breaking News', 'News Brief', 'Student Government'], "News")
     newdf["category"] = newdf["category"].replace(['Wild Art'], 'Life & Arts')
-    newdf["category"] = newdf["category"].replace(["Editor's Desk", 'Editor’s Desk', 'Editorial', 'Letter to the Editor', 'Op-Ed'], 'Opinion')
+    newdf["category"] = newdf["category"].replace(["Editor's Desk", 'Editor’s Desk', 'Editorial', 'Letter to the Editor'], 'Opinion') # No Op-Eds
     newdf["category"] = newdf["category"].replace(['Basketball', 'Chess', 'Esports'], 'Sports')
     return newdf
 
@@ -34,8 +34,8 @@ def findAuthors(df):
     notNames = ['Life & Arts', 'Comics & Activities', 'History', 'Wild Art', 'News', 'Breaking News', 'News Brief', 'Student Government', 'Newspaper', 'Opinion', 'Editor’s Desk', "Editor's Desk", 'Editorial', 'Letter to the Editor', 'Op-Ed', 'Sports', 'Basketball', 'Chess', 'Esports', 'Uncategorized', 
         'Featured', 'Breaking News', 'Construction', 'Highlight', 'Immigration', 'In Case You Missed It', 'UTD Esports']
 
-    newdf = df[~df["tags"].apply(lambda tags: 'Op-Ed' in tags)] # Filters out op-eds
-    newdf = df.explode('tags') # Takes dataframe and creates new entry by tag
+    newdf = df[df['category'] != 'Op-Ed'] # Filters out op-eds
+    newdf = newdf.explode('tags') # Takes dataframe and creates new entry by tag
     newdf = newdf[~newdf['tags'].isin(notNames)] # Filters out tags that aren't names
     newdf = newdf[['tags'] + [col for col in newdf.columns if col != 'tags']] # Puts name column in front
     return newdf
