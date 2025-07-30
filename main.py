@@ -3,7 +3,7 @@ import ast
 import pandas as pd
 
 from scraping import scrapeTags
-from processing import clean, findAuthors
+from processing import clean, findCategory, simplifyCategories, findAuthors
 from analysis import analyze
 
 def main():
@@ -14,13 +14,15 @@ def main():
   # Checks if data is alr processed or if user wants to reprocess data
   scrape = True
   if os.path.exists(dataLocation):
-    print("Data detected. Do you want to re-scrape the data?")
+    print("Data detected. Do you want to re-scrape the data anyways?")
     if input("(y/n): ").lower() == 'n':
       scrape = False
 
   # Rescrapes data and saves to file OR Loads dataframe from data file
   if scrape:
     df[['times', 'tags']] = df['url'].apply(lambda x: pd.Series(scrapeTags(x)))
+    df['category'] = df['tags'].apply(findCategory)
+    df = simplifyCategories(df)
     df.to_csv(dataLocation, index=False)
   else:
     df = pd.read_csv(dataLocation)
