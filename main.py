@@ -7,8 +7,8 @@ from processing import clean, findAuthors
 from analysis import analyze
 
 def main():
-  csvLocation = 'data\\rg.csv'
-  dataLocation = "data\\data.csv"
+  csvLocation = os.path.join('data', 'rg.csv')
+  dataLocation = os.path.join("data", "data.csv")
   df = pd.read_csv(csvLocation, names=["title", "views", "url"])
   
   # Checks if data is alr processed or if user wants to reprocess data

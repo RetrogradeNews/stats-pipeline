@@ -1,4 +1,5 @@
 from PIL import Image, ImageDraw, ImageFont
+import os
 
 # Creates stats summary image for each author
 def createGraphic(author, numPieces, mostViews, totalViews):
@@ -7,8 +8,8 @@ def createGraphic(author, numPieces, mostViews, totalViews):
 
     # Initializes image and fonts
     draw = ImageDraw.Draw(img)
-    h1 = ImageFont.truetype("fonts\\CormorantGaramond-VariableFont_wght.ttf", 60)
-    h2 = ImageFont.truetype("fonts\\CormorantGaramond-VariableFont_wght.ttf", 50)
+    h1 = ImageFont.truetype(os.path.join("fonts", "CormorantGaramond-VariableFont_wght.ttf"), 60)
+    h2 = ImageFont.truetype(os.path.join("fonts", "CormorantGaramond-VariableFont_wght.ttf"), 50)
 
     # Draws text
     draw.text((center(author, h1, img, draw),200), author, fill='black', font=h1)
@@ -22,8 +23,8 @@ def createGraphic(author, numPieces, mostViews, totalViews):
     draw.text((center("Most Viewed Work", h2, img, draw),740), "Most Viewed Work", fill='purple', font=h2)
     draw.text((center(mostViews, h2, img, draw),800), mostViews, fill='blue', font=h2)
 
-    #Saves the image as a PNG
-    img.save(f"graphics\\{author.replace(" ","")}Stats.png")
+    # Saves the image as a PNG
+    img.save(os.path.join("graphics", f"{author.replace(" ","")}Stats.png"))
 
 # Calculates centered text location x
 def center(text, font, img, draw):
